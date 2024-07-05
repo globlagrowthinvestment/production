@@ -32,6 +32,7 @@ ALLOWED_HOSTS = [
     'f6c3-102-209-18-30.ngrok-free.app',
     '105.27.122.14',
     'corsheaders',
+    '*'
 ]
 
 
