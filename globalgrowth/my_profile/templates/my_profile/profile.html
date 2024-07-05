@@ -10,6 +10,25 @@
     <title>My Profile - Global Growth</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .custom-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+    
+        .custom-alert.hidden {
+            display: none;
+        }
+        
+    </style>
 </head>
 <body class="bg-gray-100">
     <div class="flex h-screen bg-gray-100">
@@ -86,20 +105,85 @@
                     </div>
                     {% endif %}
 
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <div class="bg-yellow-100 shadow-md rounded-lg p-6">
-                          <h3 class="text-lg font-semibold mb-2">Account Balance</h3>
-                          <p class="text-3xl font-bold text-green-600">Ksh {{ balance|default:"0.00" }}</p>
+                        <div id="account-balance" class="bg-yellow-100 shadow-md rounded-lg p-6">
+                            <h3 class="text-lg font-semibold mb-2">Account Balance</h3>
+                            <p class="text-3xl font-bold text-green-600">Ksh <span id="balance-amount">{{ balance|default:"0.00" }}</span></p>
                         </div>
                         <div class="bg-green-500 shadow-md rounded-lg p-6">
-                          <h3 class="text-lg font-semibold mb-2">Total Deposits</h3>
-                          <p class="text-3xl font-bold text-blue-600">Ksh {{ total_deposits|default:"0.00" }}</p>
+                            <h3 class="text-lg font-semibold mb-2">Total Deposits</h3>
+                            <p class="text-3xl font-bold text-blue-600">Ksh {{ total_deposits|default:"0.00" }}</p>
                         </div>
-                        <div class="bg-red-300 shadow-md rounded-lg p-6">
-                          <h3 class="text-lg font-semibold mb-2">Referral Earnings</h3>
-                          <p class="text-3xl font-bold text-red-600">Ksh {{ total_withdrawals|default:"0.00" }}</p>
+                        <div id="investment-earnings" class="bg-red-300 shadow-md rounded-lg p-6">
+                            <h3 class="text-lg font-semibold mb-2">Investment Earnings</h3>
+                            <p class="text-3xl font-bold text-red-600">Ksh <span id="earnings-amount">{{ total_withdrawals|default:"0.00" }}</span></p>
                         </div>
-                      </div>
+                    </div>
+                       <!-- Investment Packages Dropdown -->
+                       <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+                        <h2 class="text-2xl font-semibold mb-4">Investment Packages</h2>
+                        <div class="relative inline-block text-left w-full">
+                            <div>
+                                <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="options-menu" aria-haspopup="true" aria-expanded="true">
+                                    Select a Package
+                                    <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="hidden origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5" id="dropdown-menu">
+                                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" data-package="Silver" data-amount="1000">
+                                        <span class="flex justify-between items-center">
+                                            <span>Silver Package</span>
+                                            <span class="bg-gray-200 text-gray-800 px-2 py-1 rounded">Ksh 1,000</span>
+                                        </span>
+                                    </a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" data-package="Iron" data-amount="3000">
+                                        <span class="flex justify-between items-center">
+                                            <span>Iron Package</span>
+                                            <span class="bg-gray-300 text-gray-800 px-2 py-1 rounded">Ksh 3,000</span>
+                                        </span>
+                                    </a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" data-package="Bronze" data-amount="5000">
+
+                                        <span class="flex justify-between items-center">
+                                            <span>Bronze Package</span>
+                                            <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded">Ksh 5,000</span>
+                                        </span>
+                                    </a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" data-package="Gold" data-amount="10000">
+
+                                        <span class="flex justify-between items-center">
+                                            <span>Gold Package</span>
+                                            <span class="bg-yellow-300 text-yellow-800 px-2 py-1 rounded">Ksh 10,000</span>
+                                        </span>
+                                    </a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" data-package="Bronze Pro" data-amount="20000">
+
+                                        <span class="flex justify-between items-center">
+                                            <span>Bronze Pro Package</span>
+                                            <span class="bg-yellow-400 text-yellow-800 px-2 py-1 rounded">Ksh 20,000</span>
+                                        </span>
+                                    </a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" data-package="Gold Pro" data-amount="50000">
+                                        <span class="flex justify-between items-center">
+                                            <span>Gold Pro Package</span>
+                                            <span class="bg-yellow-500 text-yellow-800 px-2 py-1 rounded">Ksh 50,000</span>
+                                        </span>
+                                    </a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" data-package="Exceptional" data-amount="100000">
+                                        <span class="flex justify-between items-center">
+                                            <span>Exceptional Package</span>
+                                            <span class="bg-yellow-600 text-white px-2 py-1 rounded">Ksh 100,000</span>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
                   
                     <!-- Deposit Verification -->
                     <div class="bg-white-1000 shadow-md rounded-lg p-6 mb-8">
@@ -120,48 +204,60 @@
                      <!-- Withdrawal History -->
 
                     <!-- Recent Transactions -->
-                    <div class="bg-purple-100 shadow-md rounded-lg p-6">
-                        <h2 class="text-2xl font-semibold mb-4">Recent Transactions</h2>
-                        <div class="overflow-x-auto">
-                            <table class="w-full table-auto">
-                                <thead>
-                                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                                        <th class="py-3 px-6 text-left">Date</th>
-                                        <th class="py-3 px-6 text-left">Description</th>
-                                        <th class="py-3 px-6 text-right">Amount</th>
-                                        <th class="py-3 px-6 text-center">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-gray-600 text-sm font-light">
-                                    {% for transaction in recent_transactions %}
-                                    <tr class="border-b border-gray-200 hover:bg-gray-100">
-                                        <td class="py-3 px-6 text-left whitespace-nowrap">
-                                            {{ transaction.date|date:"M d, Y" }}
-                                        </td>
-                                        <td class="py-3 px-6 text-left">
-                                            {{ transaction.description }}
-                                        </td>
-                                        <td class="py-3 px-6 text-right">
-                                            {% if transaction.amount < 0 %}
-                                                <span class="text-red-600">-Ksh {{ transaction.amount|floatformat:"-2"|slice:"1:" }}</span>
-                                            {% else %}
-                                                <span class="text-green-600">Ksh {{ transaction.amount|floatformat:"-2" }}</span>
-                                            {% endif %}
-                                        </td>
-                                        <td class="py-3 px-6 text-center">
-                                            <span class="bg-{{ transaction.status }}-200 text-{{ transaction.status }}-600 py-1 px-3 rounded-full text-xs">
-                                                {{ transaction.status|title }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    {% empty %}
-                                    <tr>
-                                        <td colspan="4" class="py-3 px-6 text-center">No recent transactions</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+                    <!-- Recent Transactions -->
+<div class="bg-purple-100 shadow-md rounded-lg p-6">
+    <h2 class="text-2xl font-semibold mb-4">Recent Transactions</h2>
+    <div class="overflow-x-auto">
+        <table class="w-full table-auto">
+            <thead>
+                <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                    <th class="py-3 px-6 text-left">Date</th>
+                    <th class="py-3 px-6 text-left">Description</th>
+                    <th class="py-3 px-6 text-right">Amount</th>
+                    <th class="py-3 px-6 text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-600 text-sm font-light">
+                {% for transaction in recent_transactions %}
+                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left whitespace-nowrap">
+                        {{ transaction.date|date:"M d, Y" }}
+                    </td>
+                    <td class="py-3 px-6 text-left">
+                        {{ transaction.description }}
+                    </td>
+                    <td class="py-3 px-6 text-right">
+                        {% if transaction.amount < 0 %}
+                            <span class="text-red-600">-Ksh {{ transaction.amount|floatformat:"-2"|slice:"1:" }}</span>
+                        {% else %}
+                            <span class="text-green-600">Ksh {{ transaction.amount|floatformat:"-2" }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="py-3 px-6 text-center">
+                        <span class="px-2 py-1 font-semibold leading-tight rounded-full 
+                        {% if transaction.status == 'approved' %}
+                            text-green-700 bg-green-100
+                        {% elif transaction.status == 'verified' %}
+                            text-blue-700 bg-blue-100
+                        {% elif transaction.status == 'pending' %}
+                            text-gray-700 bg-gray-100
+                        {% else %}
+                            text-yellow-700 bg-yellow-100
+                        {% endif %}">
+                            {{ transaction.status|title }}
+                        </span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="py-3 px-6 text-center">No recent transactions</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
                     </div>
                 </div>
             </main>
@@ -203,19 +299,102 @@
             </a>
         </nav>
     </div>
+    <div id="customAlert" class="custom-alert hidden">
+        <div class="alert-content bg-white rounded-lg shadow-xl p-6 max-w-sm mx-auto">
+            <h2 class="text-xl font-semibold mb-4">Notification</h2>
+            <p id="alertMessage" class="text-gray-700 mb-6"></p>
+            <button id="finishButton" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200">
+                Finish
+            </button>
+        </div>
+    </div>
 
     <script>
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const mobileSidebar = document.getElementById('mobile-sidebar');
-        const closeSidebar = document.getElementById('close-sidebar');
+        document.addEventListener('DOMContentLoaded', () => {
+    // Elements
+    const customAlert = document.getElementById('customAlert');
+    const alertMessage = document.getElementById('alertMessage');
+    const finishButton = document.getElementById('finishButton');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const mobileSidebar = document.getElementById('mobile-sidebar');
+    const closeSidebar = document.getElementById('close-sidebar');
+    const dropdownButton = document.getElementById('options-menu');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    const balanceElement = document.getElementById('balance-amount');
+    const earningsElement = document.getElementById('earnings-amount');
 
-        sidebarToggle.addEventListener('click', () => {
-            mobileSidebar.classList.toggle('-translate-x-full');
-        });
+    // Custom Alert Functions
+    function showCustomAlert(message) {
+        alertMessage.textContent = message;
+        customAlert.classList.remove('hidden');
+    }
 
-        closeSidebar.addEventListener('click', () => {
-            mobileSidebar.classList.add('-translate-x-full');
-        });
+    function hideCustomAlert() {
+        customAlert.classList.add('hidden');
+    }
+
+    // Event Listeners
+    finishButton.addEventListener('click', hideCustomAlert);
+
+    sidebarToggle.addEventListener('click', () => {
+        mobileSidebar.classList.toggle('-translate-x-full');
+    });
+
+    closeSidebar.addEventListener('click', () => {
+        mobileSidebar.classList.add('-translate-x-full');
+    });
+
+    dropdownButton.addEventListener('click', () => {
+        dropdownMenu.classList.toggle('hidden');
+    });
+
+    // Close dropdown when clicking outside
+    window.addEventListener('click', (event) => {
+        if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            dropdownMenu.classList.add('hidden');
+        }
+    });
+
+    // Load stored values on page load
+    const storedBalance = localStorage.getItem('accountBalance');
+    const storedEarnings = localStorage.getItem('investmentEarnings');
+    
+    if (storedBalance) {
+        balanceElement.textContent = storedBalance;
+    }
+    if (storedEarnings) {
+        earningsElement.textContent = storedEarnings;
+    }
+
+    // Investment package selection
+    dropdownMenu.addEventListener('click', (event) => {
+        if (event.target.closest('[data-package]')) {
+            const packageElement = event.target.closest('[data-package]');
+            const packageName = packageElement.dataset.package;
+            const packageAmount = parseInt(packageElement.dataset.amount);
+            const currentBalance = parseInt(balanceElement.textContent);
+
+            if (currentBalance >= packageAmount) {
+                const newBalance = currentBalance - packageAmount;
+                const currentEarnings = parseInt(earningsElement.textContent);
+                const newEarnings = currentEarnings + packageAmount;
+
+                balanceElement.textContent = newBalance.toFixed(2);
+                earningsElement.textContent = newEarnings.toFixed(2);
+
+                // Store updated values in localStorage
+                localStorage.setItem('accountBalance', newBalance.toFixed(2));
+                localStorage.setItem('investmentEarnings', newEarnings.toFixed(2));
+
+                showCustomAlert(`Successfully invested in ${packageName} Package for Ksh ${packageAmount}`);
+            } else {
+                showCustomAlert(`Insufficient balance for ${packageName} Package. Required: Ksh ${packageAmount}, Available: Ksh ${currentBalance}`);
+            }
+
+            dropdownMenu.classList.add('hidden');
+        }
+    });
+});
     </script>
 </body>
 </html>
